@@ -1,0 +1,166 @@
+{% extends 'core/base.html' %}
+
+{% block menu %}
+  {% include 'core/includes/menu_@aplicacion.html'%}
+{% endblock %}
+
+<!-- #@[p_modelo_update_abajo_01] -->
+
+{% block cuerpo %}
+
+{% load static %}
+
+<!-- #@[p_modelo_update_abajo_02] -->
+
+  <div class="container update-@modelo">
+    <!-- Titulo de la insercion -->
+    <div class="row fila-titulo-update d-flex align-items-center">
+<!-- #@[p_modelo_update_abajo_03] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+<!-- #@[p_modelo_update_abajo_04] -->
+      <div class="col-12 d-flex col-md-@numerocolumnasmodeloupdate @justificacionhorizontaltituloupdate @justificacionverticaltituloupdate titulo-update">
+<!-- #@[p_modelo_update_abajo_05] -->
+        @tituloupdate
+<!-- #@[p_modelo_update_abajo_06] -->
+      </div>
+<!-- #@[p_modelo_update_abajo_07] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+    </div>
+<!-- #@[p_modelo_update_abajo_09] -->
+
+    {% if error %}
+<!-- #@[p_modelo_update_error_01] -->
+      <div class="row fila-comentario-inserta d-flex align-items-center">
+<!-- #@[p_modelo_inserta_error_02] -->
+        <div class="col-12 d-none d-md-block col-md-1"></div>
+<!-- #@[p_modelo_update_error_03] -->
+        <div class="col-12 col-md-10 columna-comentario-inserta">
+<!-- #@[p_modelo_update_error_04] -->
+          <span class="comentario-inserta">
+<!-- #@[p_modelo_update_error_05] -->
+            <li class="color_error"><strong>{{ error|escape }}</strong></li>
+<!-- #@[p_modelo_update_error_06] -->
+          </span>
+<!-- #@[p_modelo_update_error_07] -->
+        </div>
+<!-- #@[p_modelo_update_error_08] -->
+        <div class="col-12 d-none d-md-block col-md-1"></div>
+<!-- #@[p_modelo_update_error_09] -->
+      </div>      
+<!-- #@[p_modelo_update_error_10] -->
+    {% endif %}
+
+    <!-- Comentario de la insercion -->
+<!-- #@[p_modelo_update_abajo_10] -->
+    <div class="row fila-comentario-update d-flex align-items-center">
+<!-- #@[p_modelo_update_abajo_11] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+<!-- #@[p_modelo_update_abajo_12] -->
+      <div class="col-12 col-md-@numerocolumnasmodeloupdate columna-comentario-update">
+<!-- #@[p_modelo_update_abajo_13] -->
+        <span class="comentario-update">
+<!-- #@[p_modelo_update_abajo_14] -->
+          @comentarioupdate
+<!-- #@[p_modelo_update_abajo_15] -->
+        </span>
+<!-- #@[p_modelo_update_abajo_16] -->
+      </div>
+<!-- #@[p_modelo_update_abajo_17] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+<!-- #@[p_modelo_update_abajo_18] -->
+    </div>
+    <!-- Cuerpo de datos -->
+<!-- #@[p_modelo_update_abajo_19] -->
+    <div class="row fila-datos-update d-flex align-items-center">
+<!-- #@[p_modelo_update_abajo_20] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+<!-- #@[p_modelo_update_abajo_21] -->
+      <div class="col-12 col-md-@numerocolumnasmodeloupdate border rounded">
+<!-- #@[p_modelo_update_abajo_22] -->
+        <form action="" method="post" enctype="multipart/form-data" id="@modeloForm" @loaddata>
+          {% csrf_token %}
+
+          {% if 'correcto' in request.GET %}
+            <p style="color:red;">(Registro modificado correctamente)</p>
+          {% endif %}
+
+<!-- #@[p_modelo_update_abajo_23] -->
+          <div class="row">
+<!-- #@[p_modelo_update_abajo_24] -->
+            <div class="col">
+<!-- #@[p_modelo_update_abajo_25] -->
+              {% if form.non_field_errors %}
+<!-- #@[p_modelo_update_abajo_26] -->
+                <ol>
+<!-- #@[p_modelo_update_abajo_27] -->
+                  {% for error in form.non_field_errors %}
+<!-- #@[p_modelo_update_abajo_28] -->
+                    <li class="color_error"><strong>{{ error|escape }}</strong></li>
+<!-- #@[p_modelo_update_abajo_29] -->
+                  {% endfor %}
+<!-- #@[p_modelo_update_abajo_30] -->
+                </ol>
+<!-- #@[p_modelo_update_abajo_31] -->
+              {% endif %}
+<!-- #@[p_modelo_update_abajo_32] -->
+            </div>
+<!-- #@[p_modelo_update_abajo_33] -->
+          </div>
+<!-- #@[p_modelo_update_abajo_34] -->
+          <div class="row mt-4">
+<!-- #@[p_modelo_update_abajo_35] -->
+            <div class="col">
+<!-- #@[p_modelo_update_abajo_36] -->
+@controles
+<!-- #@[p_modelo_update_abajo_37] -->
+            </div>
+<!-- #@[p_modelo_update_abajo_38] -->
+          </div>
+<!-- #@[p_modelo_update_abajo_39] -->
+          <div class="row fila-boton-update mt-3 mb-3">
+<!-- #@[p_modelo_update_abajo_40] -->
+            <div class="col">
+<!-- #@[p_modelo_update_abajo_41] -->
+                <input type="submit" class="btn btn-primary btn-block mt-3 boton-update" value="Grabar @modelo" />
+<!-- #@[p_modelo_update_abajo_42] -->
+            </div>
+<!-- #@[p_modelo_update_abajo_43] -->
+          </div>
+<!-- #@[p_modelo_update_abajo_44] -->
+        </form>               
+<!-- #@[p_modelo_update_abajo_45] -->
+      </div>
+<!-- #@[p_modelo_update_abajo_46] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+<!-- #@[p_modelo_update_abajo_47] -->
+    </div>
+<!-- #@[p_modelo_update_abajo_48] -->
+    <div class="row mt-3">
+<!-- #@[p_modelo_update_abajo_49] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+<!-- #@[p_modelo_update_abajo_50] -->
+      <div class="col-12  col-md-@numerocolumnasmodeloupdate ">
+<!-- #@[p_modelo_update_abajo_51] -->
+        <!-- Hijos -->
+@listahijos      
+<!-- #@[p_modelo_update_abajo_52] -->
+      </div>
+<!-- #@[p_modelo_update_abajo_53] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+<!-- #@[p_modelo_update_abajo_54] -->
+    </div>
+<!-- #@[p_modelo_update_abajo_55] -->
+    <!-- Pie de insercion -->
+    <div class="row pie-lista">
+<!-- #@[p_modelo_update_abajo_56] -->
+    </div>
+  </div>
+<!-- #@[p_modelo_update_abajo_57] -->
+<!-- </main> -->
+
+@ajaxhijo
+
+<!-- #@[p_modelo_update_abajo_58] -->
+{% endblock %}
+
+<!-- #@[p_modelo_update_abajo_59] -->
