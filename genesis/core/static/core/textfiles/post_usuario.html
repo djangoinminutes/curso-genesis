@@ -1,9 +1,0 @@
-def post(self,request,*args,**kwargs):
-    form = self.form_class(request.POST,request.FILES)
-    user = request.user
-    if form.is_valid():
-        @modelo = form.save(commit=False)
-        @modelo.@propiedad = user
-        @modelo.save()
-        return HttpResponseRedirect(self.get_success_url())
-    return render(request, '@aplicacion/@modelo_form.html', {'form': form})
