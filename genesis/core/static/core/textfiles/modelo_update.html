@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+
+{% block menu %}
+  {% include 'core/includes/menu_@aplicacion.html'%}
+{% endblock %}
+
+{% block cuerpo %}
+
+{% load static %}
+
+  <div class="container update-@modelo">
+    <!-- Titulo de la insercion -->
+    <div class="row fila-titulo-update d-flex align-items-center">
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+      <div class="col-12 d-flex col-md-@numerocolumnasmodeloupdate @justificacionhorizontaltituloupdate @justificacionverticaltituloupdate titulo-update">
+        @tituloupdate
+      </div>
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+    </div>
+
+<!-- #@[p_modelo_borra_error_01] -->
+    {% if form.errors %}
+<!-- #@[p_modelo_borra_error_02] -->
+      <ul class="user-msg error">
+<!-- #@[p_modelo_borra_error_03] -->
+        {% for field in form %}
+<!-- #@[p_modelo_borra_error_04] -->
+          {% for error in field.errors %}
+<!-- #@[p_modelo_borra_error_05] -->
+            <li>
+<!-- #@[p_modelo_borra_error_06] -->
+              {% if field != '__all__' %}
+<!-- #@[p_modelo_borra_error_07] -->
+                <strong>Error en el control: {{ field.label }}:</strong>
+<!-- #@[p_modelo_borra_error_08] -->
+              {% endif %}
+<!-- #@[p_modelo_borra_error_09] -->
+              {{ error }}
+<!-- #@[p_modelo_borra_error_10] -->
+            </li>
+<!-- #@[p_modelo_borra_error_11] -->
+          {% endfor %}
+<!-- #@[p_modelo_borra_error_12] -->
+        {% endfor %}
+<!-- #@[p_modelo_borra_error_13] -->
+      </ul>
+<!-- #@[p_modelo_borra_error_14] -->
+    {% endif %}
+<!-- #@[p_modelo_borra_error_15] -->
+
+<!--     {% if form.errors %}
+      <ol>
+        {% for error in form.errors %}
+          <li class="color_error"><strong>Error en el campo : {{ error|escape }}</strong></li>
+        {% endfor %}
+      </ol>
+    {% endif %} -->
+
+    <!-- Comentario de la insercion -->
+    <div class="row fila-comentario-update d-flex align-items-center">
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+      <div class="col-12 col-md-@numerocolumnasmodeloupdate columna-comentario-update">
+        <span class="comentario-update">
+          @comentarioupdate
+        </span>
+      </div>
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+    </div>
+    <!-- Cuerpo de datos -->
+    <div class="row fila-datos-update d-flex align-items-center">
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdaupdate"></div>
+      <div class="col-12 col-md-@numerocolumnasmodeloupdate">
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              {% if form.non_field_errors %}
+                <ol>
+                  {% for error in form.non_field_errors %}
+                    <li class="color_error"><strong>{{ error|escape }}</strong></li>
+                  {% endfor %}
+                </ol>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col font-label-@modelo">
+@controles
+            </div>
+          </div>
+          <div class="row fila-boton-update mt-3 mb-3">
+            <div class="col">
+                <input type="submit" class="btn btn-primary btn-block mt-3 boton-update" value="Grabar @modelo" />
+            </div>
+          </div>
+        </form>               
+      </div>
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechaupdate"></div>
+
+@update
+
+{% endblock %}

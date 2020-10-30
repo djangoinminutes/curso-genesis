@@ -100,3 +100,12 @@ class ReporteNuevo(models.Model):
         return self.reportesize
 
 
+class TextFiles(models.Model):
+    file = models.CharField(max_length=100)
+    texto = models.TextField(default='')
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Fecha de edición")
+    
+    def __str__(self):
+        return self.file

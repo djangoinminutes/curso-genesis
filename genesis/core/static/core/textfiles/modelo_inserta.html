@@ -1,0 +1,158 @@
+{% extends 'core/base.html' %}
+
+{% block menu %}
+  {% include 'core/includes/menu_@aplicacion.html'%}
+{% endblock %}
+
+{% block cuerpo %}
+
+{% load static %}
+
+<!-- #@[p_modelo_inserta_01] -->
+
+  <div class="container inserta-@modelo">
+    <!-- Titulo de la insercion -->
+    <div class="row fila-titulo-inserta d-flex align-items-center">
+<!-- #@[p_modelo_inserta_02] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdainserta"></div>
+<!-- #@[p_modelo_inserta_03] -->
+      <div class="col-12 d-flex col-md-@numerocolumnasmodeloinserta @justificacionhorizontaltituloinserta @justificacionverticaltituloinserta titulo-inserta">
+<!-- #@[p_modelo_inserta_04] -->
+        @tituloinserta
+<!-- #@[p_modelo_inserta_05] -->
+      </div>
+<!-- #@[p_modelo_inserta_06] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechainserta"></div>
+<!-- #@[p_modelo_inserta_07] -->
+    </div>
+
+<!-- #@[p_modelo_borra_error_01] -->
+    {% if form.errors %}
+<!-- #@[p_modelo_borra_error_02] -->
+      <ul class="user-msg error">
+<!-- #@[p_modelo_borra_error_03] -->
+        {% for field in form %}
+<!-- #@[p_modelo_borra_error_04] -->
+          {% for error in field.errors %}
+<!-- #@[p_modelo_borra_error_05] -->
+            <li>
+<!-- #@[p_modelo_borra_error_06] -->
+              {% if field != '__all__' %}
+<!-- #@[p_modelo_borra_error_07] -->
+                <strong>Error en el control: {{ field.label }}:</strong>
+<!-- #@[p_modelo_borra_error_08] -->
+              {% endif %}
+<!-- #@[p_modelo_borra_error_09] -->
+              {{ error }}
+<!-- #@[p_modelo_borra_error_10] -->
+            </li>
+<!-- #@[p_modelo_borra_error_11] -->
+          {% endfor %}
+<!-- #@[p_modelo_borra_error_12] -->
+        {% endfor %}
+<!-- #@[p_modelo_borra_error_13] -->
+      </ul>
+<!-- #@[p_modelo_borra_error_14] -->
+    {% endif %}
+<!-- #@[p_modelo_borra_error_15] -->
+
+<!--     {% if form.errors %}
+      <ol>
+        {% for error in form.errors %}
+          <li class="color_error"><strong>Error en el campo : {{ error|escape }}</strong></li>
+        {% endfor %}
+      </ol>
+    {% endif %} -->
+
+    <!-- Comentario de la insercion -->
+<!-- #@[p_modelo_inserta_08] -->
+    <div class="row fila-comentario-inserta d-flex align-items-center">
+<!-- #@[p_modelo_inserta_09] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdainserta"></div>
+<!-- #@[p_modelo_inserta_10] -->
+      <div class="col-12 col-md-@numerocolumnasmodeloinserta columna-comentario-inserta">
+<!-- #@[p_modelo_inserta_11] -->
+        <span class="comentario-inserta">
+<!-- #@[p_modelo_inserta_12] -->
+          @comentarioinserta
+<!-- #@[p_modelo_inserta_13] -->
+        </span>
+<!-- #@[p_modelo_inserta_14] -->
+      </div>
+<!-- #@[p_modelo_inserta_15] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechainserta"></div>
+<!-- #@[p_modelo_inserta_16] -->
+    </div>
+    <!-- Cuerpo de datos -->
+<!-- #@[p_modelo_inserta_17] -->
+    <div class="row fila-datos-inserta d-flex align-items-center">
+<!-- #@[p_modelo_inserta_18] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasizquierdainserta"></div>
+<!-- #@[p_modelo_inserta_19] -->
+      <div class="col-12 col-md-@numerocolumnasmodeloinserta">
+<!-- #@[p_modelo_inserta_20] -->
+        <form action="" method="post" enctype="multipart/form-data" id="@modeloForm" @loaddata>
+          {% csrf_token %}
+<!-- #@[p_modelo_inserta_21] -->
+          <div class="row">
+<!-- #@[p_modelo_inserta_22] -->
+            <div class="col">
+<!-- #@[p_modelo_inserta_23] -->
+              {% if form.non_field_errors %}
+<!-- #@[p_modelo_inserta_24] -->
+                <ol>
+<!-- #@[p_modelo_inserta_25] -->
+                  {% for error in form.non_field_errors %}
+<!-- #@[p_modelo_inserta_26] -->
+                    <li class="color_error"><strong>{{ error|escape }}</strong></li>
+<!-- #@[p_modelo_inserta_27] -->
+                  {% endfor %}
+<!-- #@[p_modelo_inserta_28] -->
+                </ol>
+<!-- #@[p_modelo_inserta_29] -->
+              {% endif %}
+<!-- #@[p_modelo_inserta_30] -->
+            </div>
+<!-- #@[p_modelo_inserta_31] -->
+          </div>
+<!-- #@[p_modelo_inserta_32] -->
+          <div class="row mt-4">
+<!-- #@[p_modelo_inserta_33] -->
+            <div class="col font-label-@modelo">
+<!-- #@[p_modelo_inserta_34] -->
+@controles
+<!-- #@[p_modelo_inserta_35] -->
+            </div>
+          </div>
+<!-- #@[p_modelo_inserta_36] -->
+          <div class="row fila-boton-inserta mt-3 mb-3">
+<!-- #@[p_modelo_inserta_37] -->
+            <div class="col">
+<!-- #@[p_modelo_inserta_38] -->
+                <input type="submit" class="btn btn-primary btn-block mt-3 boton-inserta" value="Grabar @modelo" />
+<!-- #@[p_modelo_inserta_39] -->
+            </div>
+<!-- #@[p_modelo_inserta_40] -->
+          </div>
+<!-- #@[p_modelo_inserta_41] -->
+        </form>               
+      </div>
+<!-- #@[p_modelo_inserta_42] -->
+      <div class="col-12 d-none d-md-block col-md-@numerocolumnasderechainserta"></div>
+<!-- #@[p_modelo_inserta_43] -->
+    </div>
+    <!-- Pie de insercion -->
+<!-- #@[p_modelo_inserta_44] -->
+    <div class="row pie-lista">
+<!-- #@[p_modelo_inserta_45] -->
+    </div>
+  </div>
+<!-- #@[p_modelo_inserta_46] -->
+<!-- </main> -->
+
+@ajaxhijo
+<!-- #@[p_modelo_inserta_47] -->
+
+{% endblock %}
+
+<!-- #@[p_modelo_inserta_48] -->

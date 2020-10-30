@@ -1,0 +1,111 @@
+{% extends 'core/base.html' %}
+
+{% block menu %}
+  {% include 'core/includes/menu_@aplicacion.html'%}
+{% endblock %}
+
+{% block cuerpo %}
+
+{% load static %}
+
+<!-- #@[p_modelo_list_01] -->
+
+  <div class="border" style="padding: 5px;">
+<!-- #@[p_modelo_list_02] -->
+    <div class="container lista-@modelo">
+      <!-- Titulo de la lista -->
+      <div class="row fila-titulo-lista d-flex">
+<!-- #@[p_modelo_list_03] -->
+        <div class="col d-flex @justificacionhorizontaltitulolista @justificacionverticaltitulolista">
+<!-- #@[p_modelo_list_04] -->
+          <span class="titulo-lista @uppercasetitulo ">
+<!-- #@[p_modelo_list_05] -->
+            @titulolista
+<!-- #@[p_modelo_list_06] -->
+          </span>
+<!-- #@[p_modelo_list_07] -->
+        </div>
+      </div>
+<!-- Si el html tiene ocipn de busqueda de registros -->
+@busqueda
+      <!-- Comentario de la lista -->
+<!-- #@[p_modelo_list_08] -->
+      <div class="row fila-comentario-lista mb-3">
+<!-- #@[p_modelo_list_09] -->
+        <div class="col">
+<!-- #@[p_modelo_list_10] -->
+          <span class="comentario-lista">
+<!-- #@[p_modelo_list_11] -->
+            @comentariolista
+<!-- #@[p_modelo_list_12] -->
+          </span>
+<!-- #@[p_modelo_list_13] -->
+        </div>
+      </div>
+      <!-- Columnas de la lista -->
+<!-- #@[p_modelo_list_14] -->
+      <div class="row fila-columnas @conborde mb-1 mt-2">
+<!-- #@[p_modelo_list_15] -->
+        
+@listacolumnas
+<!-- #@[p_modelo_list_16] -->
+        
+      </div>
+      <!-- Listado de datos -->
+<!-- #@[p_modelo_list_17] -->
+        {% for obj in lista %}
+<!-- #@[p_modelo_list_18] -->
+          <div class="row fila-datos">
+<!-- #@[p_modelo_list_19] -->
+@listadatos
+<!-- #@[p_modelo_list_20] -->
+              <div class="col-12 d-none d-md-block col-md-@restocolumnas"></div>      
+<!-- #@[p_modelo_list_21] -->
+              <div class="col-1 edita-@modelo">
+<!-- #@[p_modelo_list_22] -->
+                <a href="{% url '@aplicacion:editar_@modelo' obj.id %}">@textoeditar</a>
+<!-- #@[p_modelo_list_23] -->
+              </div>
+<!-- #@[p_modelo_list_24] -->
+              <div class="col-1 borra-@modelo">
+<!-- #@[p_modelo_list_25] -->
+                <a href="{% url '@aplicacion:borrar_@modelo' obj.id %}" >@textoborrar</a>
+<!-- #@[p_modelo_list_26] -->
+              </div> 
+<!-- #@[p_modelo_list_27] -->
+          </div>
+        {% endfor %}   
+<!-- #@[p_modelo_list_28] -->
+      <!-- Pie del listado -->
+<!-- #@[p_modelo_list_29] -->
+      <div class="row pie-lista">
+<!-- #@[p_modelo_list_30] -->
+      </div>
+<!-- #@[p_modelo_list_31] -->
+      <!-- Reporte -->
+      <div class="row fila-nuevo-paciente mt-3 mb-3 border-top">
+<!-- #@[p_modelo_list_32] -->
+        <div class="col-2">
+<!-- #@[p_modelo_list_33] -->
+          <a class="nuevo_@modelo" href="{% url '@aplicacion:reporte_@modelo' %}">Reporte</a>
+<!-- #@[p_modelo_list_34] -->
+        </div>      
+      </div>      
+      <!-- Boton de nuevo registro -->
+      <div class="row fila-nuevo-@modelo mt-3 mb-3">
+<!-- #@[p_modelo_list_35] -->
+        <div class="col">
+<!-- #@[p_modelo_list_36] -->
+          <a class="nuevo_@modelo @linknuevomodelo" href="{% url '@aplicacion:crear_@modelo' %}">@textolinknuevomodelo</a>
+<!-- #@[p_modelo_list_37] -->
+        </div>
+      </div>
+<!-- #@[p_modelo_list_38] -->
+    </div>
+<!-- #@[p_modelo_list_39] -->
+  </div>
+<!-- </main> -->
+<!-- #@[p_modelo_list_40] -->
+
+{% endblock %}
+<!-- #@[p_modelo_list_41] -->

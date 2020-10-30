@@ -1,0 +1,19 @@
+				{% if not request.user.is_authenticated %}
+					<a href="{% url 'registration:registro' %}">
+						<img src="{% static 'core/img/registro.png' %}" alt="">
+						<span class="opcionmenu">Registro</span>
+					</a>
+					<a href="{% url 'login' %}">
+						<img src="{% static 'core/img/login.html' %}" alt="">
+						<span class="opcionmenu">Login</span>
+					</a>
+				{% else %}
+					<a href="{% url 'registration:profile' %}">
+						<img src="{% static 'core/img/perfil.png' %}" alt="">
+						<span class="opcionmenu">Perfil</span>
+					</a>
+					<a href="{% url 'logout' %}">
+						<img src="{% static 'core/img/logout' %}" alt="">
+						<span class="opcionmenu">Logout</span>
+					</a>
+				{% endif %}

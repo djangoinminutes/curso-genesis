@@ -12,7 +12,7 @@ from core.models import Genesis
 from registration.views import VerificaVigenciaUsuario
 from crear.models import Reporte, ReporteNuevo
 from django.urls import reverse_lazy
-from .models import ReporteNuevo
+from .models import ReporteNuevo, TextFiles
 from .forms import ReporteForm
 
 import os
@@ -1229,7 +1229,8 @@ def CrearProyecto(proyecto,directorio,dt,usuario):
     CopiarArchivos(dt + "__init__.py", directorio + nombre + "/" + nombre + "/__init__.py",etapa,nombre, usuario,True)
     
     # Archivo settings.py debajo del directorio del directorio del proyecto
-    stri = LeerArchivo(dt + "settings.py",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "settings.py").texto
+    # stri = LeerArchivo(dt + "settings.py",etapa,nombre,usuario)
     stri = stri.replace('@proyecto',nombre)
 
     ProcesoPersonalizacion(proyecto,nombre,'settings.py',directorio + nombre + "/" + nombre + "/",stri,nombre,etapa,usuario)
@@ -1243,11 +1244,13 @@ def CrearProyecto(proyecto,directorio,dt,usuario):
     # Archivo urls.py debajo del directorio del directorio del proyecto
     CopiarArchivos(dt + "urls.py", directorio + nombre + "/" + nombre + "/urls.py",etapa,nombre, usuario,True)
     # Archivo wsgi.py debajo del directorio del directorio del proyecto
-    stri = LeerArchivo(dt + "wsgi.py",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "wsgi.py").texto
+    # stri = LeerArchivo(dt + "wsgi.py",etapa,nombre,usuario)
     stri = stri.replace('@proyecto',nombre)
     EscribirArchivo(directorio + nombre + "/" + nombre + "/wsgi.py",etapa,nombre,stri,usuario,True)
     # Archivo manage.py debajo del directorio del proyecto
-    stri = LeerArchivo(dt + "manage.py",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "manage.py").texto
+    # stri = LeerArchivo(dt + "manage.py",etapa,nombre,usuario)
     stri = stri.replace('@proyecto',nombre)
     EscribirArchivo(directorio + nombre + "/manage.py",etapa,nombre,stri,usuario,True)
 
@@ -1311,7 +1314,8 @@ def CrearAplicaciones(proyecto,directorio,dt,usuario):
                     # Crear directorio includes debajo de la aplicacion core
                     CrearDirectorio(directorio + nombre + "/core/templates/core/includes",etapa,nombre,usuario,True)
                     # Copiar en core/includes los dos archivos html para importar los css y js de bootstarp
-                    stri = LeerArchivo(dt + "css_general.html",etapa,nombre,usuario)
+                    stri = TextFiles.objects.get(file = "css_general.html").texto
+                    # stri = LeerArchivo(dt + "css_general.html",etapa,nombre,usuario)
 
                     ProcesoPersonalizacion(proyecto,aplicacion.nombre,'css_general.html',directorio + nombre + "/core/templates/core/includes/",stri,nombre,etapa,usuario)
 
@@ -1321,7 +1325,8 @@ def CrearAplicaciones(proyecto,directorio,dt,usuario):
                     #     stri = QuitaLineasPersonalizacion(stri)                    
                     # EscribirArchivo(directorio + nombre + "/core/templates/core/includes/css_general.html",etapa,nombre,stri,True)
 
-                    stri = LeerArchivo(dt + "js_general.html",etapa,nombre,usuario)
+                    stri = TextFiles.objects.get(file = "js_general.html").texto
+                    # stri = LeerArchivo(dt + "js_general.html",etapa,nombre,usuario)
 
                     ProcesoPersonalizacion(proyecto,aplicacion.nombre,'js_general.html',directorio + nombre + "/core/templates/core/includes/",stri,nombre,etapa,usuario)
 
@@ -1361,7 +1366,8 @@ def CrearAplicaciones(proyecto,directorio,dt,usuario):
             errores.save()            
 
     # Leer el archivo settings.py
-    stri = LeerArchivo(dt + "settings.py",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "settings.py").texto
+    # stri = LeerArchivo(dt + "settings.py",etapa,nombre,usuario)
     # modificar archivo settings.py  del proyecto con la lista de los nombres de las aplicaciones
     stri = stri.replace('#@registration', "'" + 'registration' + "',")
     stri = stri.replace('#@aplicaciones', strLa)
@@ -1382,7 +1388,8 @@ def CrearAplicaciones(proyecto,directorio,dt,usuario):
             CopiarArchivos(dt + "__init__.py",directorio + nombre + "/" + aplicacion.nombre + "/__init__.py",etapa,nombre,usuario,True)
 
             # Copiar el archivo admin.py de text files en el directorio de la aplicacion
-            stri = LeerArchivo(dt + "admin.py",etapa,nombre,usuario)
+            stri = TextFiles.objects.get(file = "admin.py").texto
+            # stri = LeerArchivo(dt + "admin.py",etapa,nombre,usuario)
 
             ProcesoPersonalizacion(proyecto,aplicacion.nombre,'admin.py',directorio + nombre + "/" + aplicacion.nombre + "/",stri,nombre,etapa,usuario)
 
@@ -1414,14 +1421,16 @@ def CrearModelos(proyecto,directorio,dt,usuario):
     etapa = "CrearModelos"
 
     # leer el archivo js
-    strjs = LeerArchivo(dt + "js_propios.js",etapa,nombre,usuario)
+    strjs = TextFiles.objects.get(file = "js_propios.js").texto
+    # strjs = LeerArchivo(dt + "js_propios.js",etapa,nombre,usuario)
     # variable para el manejo de los js
     strfjs = ''
 
     for aplicacion in Aplicacion.objects.filter(proyecto=proyecto).order_by('ordengeneracion'):
 
         # Leer archivo modelo.py de core/text_files
-        strTexto = LeerArchivo(dt + "modelo.py",etapa,nombre,usuario)
+        strTexto = TextFiles.objects.get(file = "modelo.py").texto
+        # strTexto = LeerArchivo(dt + "modelo.py",etapa,nombre,usuario)
 
         # Para cada modelo crear toda su estructura
         strt = ''
@@ -1680,7 +1689,8 @@ def CrearVistas(proyecto,directorio,dt,usuario):
 
         if aplicacion.nombre == 'core':
             # Preparar el archivo core_view.py de text files en el directorio de la aplicacion core
-            stri = LeerArchivo(dt + 'core_view.py',etapa,nombre,usuario)
+            stri = TextFiles.objects.get(file = "core_view.py").texto
+            # stri = LeerArchivo(dt + 'core_view.py',etapa,nombre,usuario)
             # Ver las aplicaciones y los modelos
             strap = ''
             for app in Aplicacion.objects.filter(proyecto = proyecto):
@@ -1709,7 +1719,8 @@ def CrearVistas(proyecto,directorio,dt,usuario):
         # CopiarArchivos(dt + "views.py",directorio + nombre + "/" + aplicacion.nombre + "/views.py",etapa,nombre,True)
 
         # leer archivo vistas.py de core/text_files
-        stri = LeerArchivo(dt + 'vistas.py',etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "vistas.py").texto
+        # stri = LeerArchivo(dt + 'vistas.py',etapa,nombre,usuario)
 
         strmp = 'class HomeView(TemplateView):' + '\n'
         strmp += '\ttemplate_name = ' + "'" + aplicacion.nombre + '/home.html' + "'" + '\n'
@@ -1822,7 +1833,12 @@ def CrearVistas(proyecto,directorio,dt,usuario):
                         strv += '#@[p_crear_success_' + modelo.nombre + '_01]' + '\n' 
                         strv += '\t\t# Despues de la insercion del registro, el control' + '\n'
                         strv += '\t\t# retorna al HTML de edicion del modelo padre' + '\n'
-                        strv += '\t\treturn reverse_lazy(' + "'" + '@aplicacionpadre:editar_@modelopadre' + "'" + ', args=[self.request.GET[' + "'" + '@modelopadre_id' + "'" + ']]) + ' + "'" + '?correcto' + "'" + '\n'
+                        if modelo_padre.padre != 'nada': # modelo nieto
+                            modelo_abuelo = Modelo.objects.get(nombre=modelo_padre.padre , proyecto=proyecto)
+                            strv += '\t\treturn reverse_lazy(' + "'" + '@aplicacionpadre:editar_@modelopadre' + "'" + ', args=[self.request.GET[' + "'" +'@modelopadre_id' + "'" + ']]) + ' + "'" + '?correcto' + "'" + ' + ' + "'" + '&@modeloabuelo_id=' + "'" + ' + str(self.request.GET[' + "'" + '@modeloabuelo_id' + "'" + '])' + '\n'
+                            strv = strv.replace('@modeloabuelo', modelo_abuelo.nombre)
+                        else:
+                            strv += '\t\treturn reverse_lazy(' + "'" + '@aplicacionpadre:editar_@modelopadre' + "'" + ', args=[self.request.GET[' + "'" + '@modelopadre_id' + "'" + ']]) + ' + "'" + '?correcto' + "'" + '\n'
                         strv += '\n'                
                         strv += '\t# Procedimiento para el clik de insercion' + '\n'
                         strv += '\tdef post(self,request,*args,**kwargs):' + '\n'
@@ -2341,7 +2357,8 @@ def CrearVistas(proyecto,directorio,dt,usuario):
 
                         # Reporte escalonado
                         # print('reporte1',reporte)
-                        strr = LeerArchivo(dt + 'modelo_reporte_escalonado.py',etapa,nombre,usuario)
+                        strr = TextFiles.objects.get(file = "modelo_reporte_escalonado.py").texto
+                        # strr = LeerArchivo(dt + 'modelo_reporte_escalonado.py',etapa,nombre,usuario)
                         strr = strr.replace("@modelo",modelo.nombre)
                         strr = strr.replace("@aplicacion",aplicacion.nombre)
 
@@ -2899,7 +2916,8 @@ def CrearUrls(proyecto,directorio,dt,usuario):
             strlpp = strlpp.replace('@aplicacion', aplicacion.nombre)
 
     # Leer el archivo urls_proyecto.py de text files
-    stri = LeerArchivo(dt + "urls_proyecto.py",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "urls_proyecto.py").texto
+    # stri = LeerArchivo(dt + "urls_proyecto.py",etapa,nombre,usuario)
 
     stri = stri.replace('@listafrompatterns', strlfp)
     stri = stri.replace('@listapathpatterns', strlpp)
@@ -2918,7 +2936,8 @@ def CrearUrls(proyecto,directorio,dt,usuario):
 
         # Copiar el archivo urls.py de text files en el directorio de la aplicacion core
         if aplicacion.nombre == 'core':
-            stri = LeerArchivo(dt + "core_urls.py",etapa,nombre,usuario)
+            stri = TextFiles.objects.get(file = "core_urls.py").texto
+            # stri = LeerArchivo(dt + "core_urls.py",etapa,nombre,usuario)
 
             ProcesoPersonalizacion(proyecto,aplicacion.nombre,'urls.py',directorio + nombre + "/" + aplicacion.nombre + "/",stri,nombre,etapa,usuario)
 
@@ -2929,7 +2948,8 @@ def CrearUrls(proyecto,directorio,dt,usuario):
             # EscribirArchivo(directorio + nombre + "/" + aplicacion.nombre + "/urls.py",etapa,nombre,stri,True)
 
         # leer archivo urls.py de core/text_files
-        stri = LeerArchivo(dt + "urls_modelo.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "urls_modelo.py").texto
+        # stri = LeerArchivo(dt + "urls_modelo.py",etapa,nombre,usuario)
 
         # Para cada modelo
         strt = ''
@@ -3110,7 +3130,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
 # Crear los archivos js
 
     # leer el archivo js
-    strjs = LeerArchivo(dt + "js_propios.js",etapa,nombre,usuario)
+    strjs = TextFiles.objects.get(file = "js_propios.js").texto
+    # strjs = LeerArchivo(dt + "js_propios.js",etapa,nombre,usuario)
     # variable para el manejo de los js
     strfjs = ''
 
@@ -3148,7 +3169,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
     EscribirArchivo(directorio +"/" + nombre + "/core/static/core/js/js_propios.js",etapa,nombre,strjs,usuario,True)
 
     # Leer el archivo base.html desde textfiles
-    stri = LeerArchivoEnTexto(dt + "base.html",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "base.html").texto
+    # stri = LeerArchivoEnTexto(dt + "base.html",etapa,nombre,usuario)
 
     # Ver si existe un fondo de la pagina principal
     strBody = ''
@@ -3260,9 +3282,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
     # Crear el menu_core.html
     strTemp=''
     if proyecto.menuscontiguos:
-        strMenu = LeerArchivoEnTexto(dt + 'menu_core_contiguo.html',etapa,nombre,usuario)
+        strMenu = TextFiles.objects.get(file = "menu_core_contiguo.html").texto
+        # strMenu = LeerArchivoEnTexto(dt + 'menu_core_contiguo.html',etapa,nombre,usuario)
     else:
-        strMenu = LeerArchivoEnTexto(dt + 'menu_core.html',etapa,nombre,usuario)
+        strMenu = TextFiles.objects.get(file = "menu_core.html").texto
+        # strMenu = LeerArchivoEnTexto(dt + 'menu_core.html',etapa,nombre,usuario)
 
     # Copiar las imagenes propuestas en opciones de seguridad
     CopiarArchivos(dt + "registration/loginSF.png", directorio + nombre + "/core/static/core/img/loginSF.png",etapa,nombre, usuario,True)
@@ -3272,7 +3296,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
     CopiarArchivos(dt + "registration/homeSF.png", directorio + nombre + "/core/static/core/img/homeSF.png",etapa,nombre, usuario,True)
 
     if proyecto.conseguridad == True:
-        strTemp =  LeerArchivoEnTexto(dt + 'registration/conseguridad.html',etapa,nombre,usuario)
+        strTemp = TextFiles.objects.get(file = "registration/conseguridad.html").texto
+        # strTemp =  LeerArchivoEnTexto(dt + 'registration/conseguridad.html',etapa,nombre,usuario)
         if proyecto.menuscontiguos:
             strMenu = strMenu.replace('@columnas_opciones','col-12')
         else:
@@ -3297,14 +3322,16 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             for msp in Modelo.objects.filter(aplicacion=aplicacion):
                 if msp.padre == 'nada':
                     # Leer el archivo opcion_aplicacion.html de textfiles
-                    strApp += LeerArchivoEnTexto(dt + 'opcion_aplicacion.html',etapa,nombre,usuario)
+                    strApp += TextFiles.objects.get(file = "opcion_aplicacion.html").texto
+                    # strApp += LeerArchivoEnTexto(dt + 'opcion_aplicacion.html',etapa,nombre,usuario)
                     strApp = strApp.replace("@aplicacion",aplicacion.nombre)
                     strApp = strApp.replace("@tooltip",aplicacion.tooltip)
                     break
             for modelo in Modelo.objects.filter(aplicacion=aplicacion):
                 if modelo.padre == 'nada':
                     # Leer el archivo opcion_modelo.html de textfiles
-                    strMod += LeerArchivoEnTexto(dt + 'opcion_modelo.html',etapa,nombre,usuario)
+                    strMod += TextFiles.objects.get(file = "opcion_modelo.html").texto
+                    # strMod += LeerArchivoEnTexto(dt + 'opcion_modelo.html',etapa,nombre,usuario)
                     strMod = strMod.replace("@modelo",modelo.nombre)
                     strMod = strMod.replace("@aplicacion",aplicacion.nombre)
                     strApp = strApp.replace("@tooltip",modelo.tooltip)
@@ -3313,7 +3340,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             #     strMod += LeerArchivoEnTexto(dt + "registration/conseguridad.html",etapa,nombre)
             #     strMod = strMod.replace("@aplicacion",aplicacion.nombre)
             # Leer el archivo volver_aplicacion.html de textfiles
-            strVolver += LeerArchivoEnTexto(dt + 'opcion_volver_aplicacion.html',etapa,nombre,usuario) + '\n'
+            strVolver += TextFiles.objects.get(file = "opcion_volver_aplicacion.html").texto
+            # strVolver += LeerArchivoEnTexto(dt + 'opcion_volver_aplicacion.html',etapa,nombre,usuario) + '\n'
             strVolver = strVolver.replace("@aplicacion",aplicacion.nombre)
             strVolver = strVolver.replace("@modelos",strMod)
             if proyecto.imagenvolver:
@@ -3325,14 +3353,16 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             strMod = ''
 
             # Crear el home para cada aplicacion
-            strHome = LeerArchivoEnTexto(dt + 'home_aplicacion.html',etapa,nombre,usuario)
+            strHome = TextFiles.objects.get(file = "home_aplicacion.html").texto
+            # strHome = LeerArchivoEnTexto(dt + 'home_aplicacion.html',etapa,nombre,usuario)
             strHome = strHome.replace('@aplicacion',aplicacion.nombre)
             ProcesoPersonalizacion(proyecto,aplicacion.nombre,'home.html',directorio + nombre + '/' + aplicacion.nombre + '/templates/' + aplicacion.nombre +'/',strHome,nombre,etapa,usuario)
             # EscribirArchivo(directorio + nombre + '/' + aplicacion.nombre + '/templates/' + aplicacion.nombre +'/home.html' ,etapa,nombre,strHome,True)
 
             # Acumular el listado de aplicaciones
             if AplicacionConObjetoRaiz(aplicacion):
-                strOpcionAplicacion += LeerArchivoEnTexto(dt + 'opcion_aplicacion.html',etapa,nombre,usuario)
+                strOpcionAplicacion += TextFiles.objects.get(file = "opcion_aplicacion.html").texto
+                # strOpcionAplicacion += LeerArchivoEnTexto(dt + 'opcion_aplicacion.html',etapa,nombre,usuario)
                 strOpcionAplicacion = strOpcionAplicacion.replace('@aplicacion',aplicacion.nombre)
                 strOpcionAplicacion = strOpcionAplicacion.replace('@tooltip',aplicacion.tooltip)
                 try:
@@ -3354,9 +3384,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             # Crear el menu por cada aplicacion
             strTemp=''
             if proyecto.menuscontiguos:
-                strMenuModelo = LeerArchivoEnTexto(dt + 'menu_aplicacion_contiguo.html',etapa,nombre,usuario)
+                strMenuModelo = TextFiles.objects.get(file = "menu_aplicacion_contiguo.html").texto
+                # strMenuModelo = LeerArchivoEnTexto(dt + 'menu_aplicacion_contiguo.html',etapa,nombre,usuario)
             else:
-                strMenuModelo = LeerArchivoEnTexto(dt + 'menu_aplicacion.html',etapa,nombre,usuario)
+                strMenuModelo = TextFiles.objects.get(file = "menu_aplicacion.html").texto
+                # strMenuModelo = LeerArchivoEnTexto(dt + 'menu_aplicacion.html',etapa,nombre,usuario)
 
             strMenuModelo = strMenuModelo.replace('@aplicacion',aplicacion.nombre)
             if proyecto.imagenvolver:
@@ -3366,7 +3398,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                 strMenuModelo = strMenuModelo.replace("@hidden",h)
 
             if proyecto.conseguridad == True:
-                strTemp =  LeerArchivoEnTexto(dt + 'registration/conseguridad.html',etapa,nombre,usuario)
+                strTemp = TextFiles.objects.get(file = "registration/conseguridad.html").texto
+                # strTemp =  LeerArchivoEnTexto(dt + 'registration/conseguridad.html',etapa,nombre,usuario)
                 if proyecto.menuscontiguos:
                     strMenuModelo = strMenuModelo.replace('@columnas_opciones','col-12')
                 else:
@@ -3387,9 +3420,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             for mod in Modelo.objects.filter(aplicacion = aplicacion,padre ='nada'):
                 if mod.modeloenmenu:
                     if mod.sinbasedatos == False:
-                        strOpcionModelo += LeerArchivoEnTexto(dt + 'opcion_modelo.html',etapa,nombre,usuario)
+                        strOpcionModelo += TextFiles.objects.get(file = "opcion_modelo.html").texto
+                        # strOpcionModelo += LeerArchivoEnTexto(dt + 'opcion_modelo.html',etapa,nombre,usuario)
                     else:
-                        strOpcionModelo += LeerArchivoEnTexto(dt + 'opcion_modelosinbase.html',etapa,nombre,usuario)
+                        strOpcionModelo += TextFiles.objects.get(file = "opcion_modelosinbase.html").texto
+                        # strOpcionModelo += LeerArchivoEnTexto(dt + 'opcion_modelosinbase.html',etapa,nombre,usuario)
                     strOpcionModelo = strOpcionModelo.replace('@aplicacion',aplicacion.nombre)
                     strOpcionModelo = strOpcionModelo.replace('@modelo',mod.nombre)
                     strOpcionModelo = strOpcionModelo.replace("@tooltip",mod.tooltip)
@@ -3433,14 +3468,16 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
     strseg = ''
     if proyecto.conseguridad:
         # Leer el archivo seguridad.html de textfiles
-        strseg = LeerArchivoEnTexto(dt + "registration/conseguridad.html",etapa,nombre,usuario)
+        strseg = TextFiles.objects.get(file = "registration/conseguridad.html").texto
+        # strseg = LeerArchivoEnTexto(dt + "registration/conseguridad.html",etapa,nombre,usuario)
     stri = stri.replace('@seguridad',strseg)
 
     # Crear la busqueda en base.html
     strseg = ''
     if proyecto.conbusqueda:
         # Leer el archivo seguridad.html de textfiles
-        strseg = LeerArchivoEnTexto(dt + "conbusqueda.html",etapa,nombre,usuario)
+        strseg = TextFiles.objects.get(file = "conbusqueda.html").texto
+        # strseg = LeerArchivoEnTexto(dt + "conbusqueda.html",etapa,nombre,usuario)
     stri = stri.replace('@busqueda',strseg)
 
     stri = stri.replace("@numerocolumnabusqueda",str(proyecto.numerocolumnabusqueda))
@@ -3460,7 +3497,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
 
     # HOME
     # Copiar el archivo home.html
-    stri = LeerArchivoEnTexto(dt + "home.html",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "home.html").texto
+    # stri = LeerArchivoEnTexto(dt + "home.html",etapa,nombre,usuario)
     stra= ''
     if proyecto.imagenmedio:
         stra = "<img src=" + '"' + "{% static 'core/img/imagen-medio.png' %}" + '"' + " alt=" + '"' + '"' + " style=" + '"' + "width: 100%;height: 100%;" + '"' + ">" + "\n"
@@ -3476,7 +3514,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
 
     # CSS
     # Leer el archivo estilos.css
-    stri = LeerArchivoEnTexto(dt + "estilos.css",etapa,nombre,usuario)
+    stri = TextFiles.objects.get(file = "estilos.css").texto
+    # stri = LeerArchivoEnTexto(dt + "estilos.css",etapa,nombre,usuario)
 
     # Color de la pagina principal
     stri = stri.replace("@colorpaginaprincipal",str(proyecto.colorpaginaprincipal))
@@ -3667,8 +3706,10 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
         if aplicacion.nombre != 'core' and aplicacion.nombre != 'registration':
             for modelo in Modelo.objects.filter(aplicacion=aplicacion):
                 if modelo.sinbasedatos != False:
-                    strSinBase = LeerArchivoEnTexto(dt + 'modelo_sinbase.html',etapa,nombre,usuario)
-                    strcss = LeerArchivoEnTexto(dt + 'modelo_sinbase.css',etapa,nombre,usuario)
+                    strSinBase = TextFiles.objects.get(file = "modelo_sinbase.html").texto
+                    # strSinBase = LeerArchivoEnTexto(dt + 'modelo_sinbase.html',etapa,nombre,usuario)
+                    strcss = TextFiles.objects.get(file = "modelo_sinbase.css").texto
+                    # strcss = LeerArchivoEnTexto(dt + 'modelo_sinbase.css',etapa,nombre,usuario)
                     strSinBase = strSinBase.replace('@aplicacion',aplicacion.nombre)
                     strcss = strcss.replace('@modelo',modelo.nombre)
                     strSinBasecss += strcss
@@ -3689,15 +3730,18 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                         columnashijos = 0
                         if modelo.padre == 'nada':
                             # Leer el archivo modelo_lista.html de tet files
-                            strModeloList = LeerArchivoEnTexto(dt + 'modelo_list.html',etapa,nombre,usuario)
-                            strModeloListBusqueda=LeerArchivoEnTexto(dt + 'modelo_list_busqueda.html',etapa,nombre,usuario)
+                            strModeloList = TextFiles.objects.get(file = "modelo_list.html").texto
+                            # strModeloList = LeerArchivoEnTexto(dt + 'modelo_list.html',etapa,nombre,usuario)
+                            strModeloListBusqueda = TextFiles.objects.get(file = "modelo_list_busqueda.html").texto
+                            # strModeloListBusqueda=LeerArchivoEnTexto(dt + 'modelo_list_busqueda.html',etapa,nombre,usuario)
                             if modelo.buscadorlista:
                                 strModeloList=strModeloList.replace('@busqueda',strModeloListBusqueda)
                             else:
                                 strModeloList=strModeloList.replace('@busqueda','')
 
                             # Lee el archivo css para cada modelo
-                            strcss = LeerArchivoEnTexto(dt + 'modelo_list.css',etapa,nombre,usuario)
+                            strcss = TextFiles.objects.get(file = "modelo_list.css").texto
+                            # strcss = LeerArchivoEnTexto(dt + 'modelo_list.css',etapa,nombre,usuario)
                             # Define el margin top del modelo_list
 
                             for propiedad in Propiedad.objects.filter(modelo=modelo):
@@ -3914,9 +3958,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
             for modelo in Modelo.objects.filter(aplicacion=aplicacion):
                 if modelo.sinbasedatos == False:
                     # Leer el archivo modelo_lista.html de tet files
-                    strModeloInserta = LeerArchivoEnTexto(dt + 'modelo_inserta.html',etapa,nombre,usuario)
+                    strModeloInserta = TextFiles.objects.get(file = "modelo_inserta.html").texto
+                    # strModeloInserta = LeerArchivoEnTexto(dt + 'modelo_inserta.html',etapa,nombre,usuario)
                     # Lee el archivo css para cada modelo
-                    strcss = LeerArchivoEnTexto(dt + 'modelo_inserta.css',etapa,nombre,usuario) 
+                    strcss = TextFiles.objects.get(file = "modelo_inserta.css").texto
+                    # strcss = LeerArchivoEnTexto(dt + 'modelo_inserta.css',etapa,nombre,usuario) 
                     strcss = strcss.replace('@modelo',modelo.nombre)
                     strModeloInserta = strModeloInserta.replace('@modelo', modelo.nombre)
                     strModeloInserta = strModeloInserta.replace('@aplicacion', aplicacion.nombre)
@@ -3996,7 +4042,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                 if modelo.sinbasedatos == False:
                     strModeloUpdate= ''
                     if modelo.hijoscontiguos:
-                        strModeloUpdate = LeerArchivoEnTexto(dt + 'modelo_update_contiguo.html',etapa,nombre,usuario)
+                        strModeloUpdate = TextFiles.objects.get(file = "modelo_update_contiguo.html").texto
+                        # strModeloUpdate = LeerArchivoEnTexto(dt + 'modelo_update_contiguo.html',etapa,nombre,usuario)
                         strhc = "@listahijos" + '\n'
                         strhc += "     </div>" + '\n'
                         strhc += "     <div class=" + '"' + "col-12 d-none col-md-@numerocolumnasderechaupdate" + '"' + "></div>" + '\n'
@@ -4005,7 +4052,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                         strhc += "  </div>" + '\n'
                         strModeloUpdate = strModeloUpdate.replace('@update', strhc)
                     else:
-                        strModeloUpdate = LeerArchivoEnTexto(dt + 'modelo_update_abajo.html',etapa,nombre,usuario)
+                        strModeloUpdate = TextFiles.objects.get(file = "modelo_update_abajo.html").texto
+                        # strModeloUpdate = LeerArchivoEnTexto(dt + 'modelo_update_abajo.html',etapa,nombre,usuario)
                         strha  = "    </div>" + '\n'
                         strha += "    <div class=" + '"' + "row" + '"' + ">" + '\n'
                         strha += "       <div class=" + '"' + "col-12 rounded" + '"' + ">" + '\n'
@@ -4017,7 +4065,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                         strha += "    </div>" + '\n'
                         strModeloUpdate = strModeloUpdate.replace('@update', strha)
                     # Lee el archivo css para cada modelo
-                    strcss = LeerArchivoEnTexto(dt + 'modelo_update.css',etapa,nombre,usuario)
+                    strcss = TextFiles.objects.get(file = "modelo_update.css").texto
+                    # strcss = LeerArchivoEnTexto(dt + 'modelo_update.css',etapa,nombre,usuario)
                     strcss = strcss.replace('@modelo',modelo.nombre)
                     
                     # for propiedad in Propiedad.objects.filter(modelo=modelo):
@@ -4097,7 +4146,8 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                     strffc = ''
                     for modelohijo in Modelo.objects.filter(padre=modelo.nombre , proyecto = proyecto):
                         # Leer el css para la lista de hijos
-                        strcsshijo = LeerArchivoEnTexto(dt + 'modelo_list_hijo.css',etapa,nombre,usuario)
+                        strcsshijo = TextFiles.objects.get(file = "modelo_list_hijo.css").texto
+                        # strcsshijo = LeerArchivoEnTexto(dt + 'modelo_list_hijo.css',etapa,nombre,usuario)
                         strcsshijo = strcsshijo.replace('@modelohijo',modelohijo.nombre)
                         strBordeHijos = 'border'
 
@@ -4174,7 +4224,13 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                         strlh += "<!-- #@[p_hijo_@hijo_34] -->" + "\n"
                         strlh += '\t\t\t\t\t\t<div class="col">' + '\n'
                         strlh += "<!-- #@[p_hijo_@hijo_35] -->" + "\n"
-                        strlh += '\t\t\t\t\t\t\t<a class="@linknuevomodelo mt-2" href="{% url ' + "'" + '@aplicacionhijo:crear_@hijo' + "'" + '%}?@modelopadre_id={{ @modelopadre.id }}">@textolinknuevomodelo</a>' + '\n' + '\n'
+                        # Ver si tiene modelo abuelo
+                        if modelo.padre != 'nada':
+                            modelo_abuelo = Modelo.objects.get(nombre = modelo.padre,proyecto=proyecto)
+                            strlh += '\t\t\t\t\t\t\t<a class="@linknuevomodelo mt-2" href="{% url ' + "'" + '@aplicacionhijo:crear_@hijo' + "'" + '%}?@modelopadre_id={{ @modelopadre.id }}&@modeloabuelo_id={{ @modeloabuelo_id }}">@textolinknuevomodelo</a>' + '\n' + '\n'
+                            strlh = strlh.replace('@modeloabuelo',modelo_abuelo.nombre)
+                        else:
+                            strlh += '\t\t\t\t\t\t\t<a class="@linknuevomodelo mt-2" href="{% url ' + "'" + '@aplicacionhijo:crear_@hijo' + "'" + '%}?@modelopadre_id={{ @modelopadre.id }}">@textolinknuevomodelo</a>' + '\n' + '\n'
                         strlh += "<!-- #@[p_hijo_@hijo_36] -->" + "\n"
                         strlh += '\t\t\t\t\t\t</div>' + '\n'
                         strlh += "<!-- #@[p_hijo_@hijo_37] -->" + "\n"
@@ -4231,10 +4287,16 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                                 columnashijos += propiedadhijo.numerocolumnas
                                 strlth += '\t\t\t\t\t\t\t<div class="col-' + str(propiedadhijo.numerocolumnas) + ' d-flex @justificaciontextocolumna @uppercase align-self-center columna-@hijo-@nombrepropiedad">' + '\n'
 
-                                if modelohijo.mayusculascolumnas:
-                                    strlth += '\t\t\t\t\t\t\t\t' + propiedadhijo.textocolumna.upper() + '\n'
-                                else:
+                                # Textos de columna
+                                if propiedadhijo.textocolumna != '':
                                     strlth += '\t\t\t\t\t\t\t\t' + propiedadhijo.textocolumna + '\n'
+                                else:
+                                    strlth += '\t\t\t\t\t\t\t\t' + propiedadhijo.nombre + '\n'
+
+                                # if modelohijo.mayusculascolumnas:
+                                #     strlth += '\t\t\t\t\t\t\t\t' + propiedadhijo.textocolumna.upper() + '\n'
+                                # else:
+                                #     strlth += '\t\t\t\t\t\t\t\t' + propiedadhijo.textocolumna + '\n'
 
                                 strlth += '\t\t\t\t\t\t\t</div>' + '\n'
 
@@ -4320,11 +4382,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
                         strlh = strlh.replace('@editahijo', streh)
                         strlh = strlh.replace('@borrahijo', strbh)
                         strlh = strlh.replace('@modelopadre', modelo.nombre)
-                        strlh = strlh.replace('@modelo', modelohijo.nombre)
-                        strlh = strlh.replace('@modelo', modelohijo.nombre)
                         strlh = strlh.replace('@modelohijo', modelohijo.nombre)
-                        strlh = strlh.replace('@modelohijo', modelohijo.nombre)
-                        strlh = strlh.replace('@modelopadre', modelo.nombre)
+                        strlh = strlh.replace('@modelo', modelohijo.nombre)
+                        # strlh = strlh.replace('@modelo', modelohijo.nombre)
+                        # strlh = strlh.replace('@modelohijo', modelohijo.nombre)
+                        # strlh = strlh.replace('@modelopadre', modelo.nombre)
                         strlh = strlh.replace('@hijo', modelohijo.nombre)
                         strlh = strlh.replace('@aplicacionhijo', modelohijo.aplicacion.nombre)
                         strlh = strlh.replace('@columnashijo', strlth)
@@ -4365,9 +4427,11 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
 
             for modelo in Modelo.objects.filter(aplicacion=aplicacion):
                 if modelo.sinbasedatos == False:
-                    strcss = LeerArchivoEnTexto(dt + "modelo_borra.css",etapa,nombre,usuario)
+                    strcss = TextFiles.objects.get(file = "modelo_borra.css").texto
+                    # strcss = LeerArchivoEnTexto(dt + "modelo_borra.css",etapa,nombre,usuario)
                     strcss =  strcss.replace('@modelo', modelo.nombre)
-                    strModeloBorra = LeerArchivoEnTexto(dt + "modelo_confirm_delete.html",etapa,nombre,usuario)
+                    strModeloBorra = TextFiles.objects.get(file = "modelo_confirm_delete.html").texto
+                    # strModeloBorra = LeerArchivoEnTexto(dt + "modelo_confirm_delete.html",etapa,nombre,usuario)
                     strModeloBorra =  strModeloBorra.replace('@modelo', modelo.nombre)
                     strModeloBorra =  strModeloBorra.replace('@numerocolumnasizquierdaborra', str(modelo.numerocolumnasizquierdaborra))
                     strModeloBorra =  strModeloBorra.replace('@numerocolumnasmodeloborra', str(modelo.numerocolumnasmodeloborra))
@@ -4443,8 +4507,10 @@ def CrearTemplates(proyecto,directorio,directoriogenesis,dt,usuario):
     # EscribirArchivo(directorio + nombre + "/core/static/core/css/modelo_borra.css",etapa, nombre,strcssTotal,True)
 
     # Manejo de los templates de los modelos hijos que son foreign en otros modelos select
-    strHtml = LeerArchivoEnTexto(dt + "load_hijo.html",etapa,nombre,usuario)
-    strAjax = LeerArchivoEnTexto(dt + "ajax_load_hijo.html",etapa,nombre,usuario)
+    strHtml = TextFiles.objects.get(file = "load_hijo.html").texto
+    # strHtml = LeerArchivoEnTexto(dt + "load_hijo.html",etapa,nombre,usuario)
+    strAjax = TextFiles.objects.get(file = "ajax_load_hijo.html").texto
+    # strAjax = LeerArchivoEnTexto(dt + "ajax_load_hijo.html",etapa,nombre,usuario)
     strData = " data-@modelos-url=" + '"' + "{% url '@aplicacion:ajax_load_@modelos' %}" + '"'
     strTemplate = ''
     for modelo in Modelo.objects.filter(proyecto=proyecto):
@@ -4498,7 +4564,8 @@ def CrearForms(proyecto,directorio,dt,usuario):
         # CopiarArchivos(dt + "forms.py",directorio + nombre + "/" + aplicacion.nombre + "/forms.py",etapa,nombre,usuario,True)
 
         # Leer forms.py de text files
-        stri = LeerArchivo(dt + "forms.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "forms.py").texto
+        # stri = LeerArchivo(dt + "forms.py",etapa,nombre,usuario)
 
         # Para cada modelo
         strt = ''
@@ -4540,18 +4607,18 @@ def CrearForms(proyecto,directorio,dt,usuario):
                                 strim += 'from ' + Aplicacion.objects.get(id=modelo_foraneo.aplicacion.id).nombre + '.models import ' + modelo_foraneo.nombre + '\n'
                             # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.Select(choices=' + modelo_foraneo.nombre + '.objects.all()),' + '\n'
                             strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.Select(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + '},choices=' + modelo_foraneo.nombre + '.objects.all()),' + '\n'
-                        if propiedad.tipo == 't':
-                            # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(format="%m/%d/%Y"),' + '\n'
-                            strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateTimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'datepicker form-control  font_control_@modelo mt-1' + "'" + '},format="%m/%d/%Y"),' + '\n'
+                        # if propiedad.tipo == 't':
+                        #     # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(format="%m/%d/%Y"),' + '\n'
+                        #     strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateTimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'datepicker form-control  font_control_@modelo mt-1' + "'" + '},format="%m/%d/%Y"),' + '\n'
                         if propiedad.tipo == 'e':
                             # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(format="%m/%d/%Y"),' + '\n'
-                            strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.TimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + '}),' + '\n'
+                            strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.TimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + '},format="%H:%M"),' + '\n'
                         if propiedad.tipo == 'n':
                             # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(format="%m/%d/%Y"),' + '\n'
                             strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'datepicker form-control  font_control_@modelo mt-1' + "'" + '},format="%m/%d/%Y"),' + '\n'
                         if propiedad.tipo == 't':
                             # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateInput(format="%m/%d/%Y"),' + '\n'
-                            strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateTimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + '},format="%m/%d/%Y"),' + '\n'
+                            strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.DateTimeInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + '},format="%m/%d/%Y %H:%M"),' + '\n'
                         if propiedad.tipo == 'b':
                             # strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.CheckboxInput(),' + '\n'
                             strw += "\t\t\t'" + propiedad.nombre + "'" + ': forms.CheckboxInput(attrs={' + "'" + 'class' + "'" + ':' + "'" + 'form-control  font_control_@modelo mt-1' + "'" + ', ' + "'" + 'placeholder' + "'" + ': ' + "'" + '@textoplaceholder' + "'" + '}),' + '\n'
@@ -4770,25 +4837,29 @@ def CrearSeguridad(proyecto,directorio,dt,usuario):
     # views.py seguridad
     if proyecto.conseguridad:
         # Copia el archivo views.py de text files en registratio
-        stri = LeerArchivo(dt + "/registration/views.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "/registration/views.py").texto
+        # stri = LeerArchivo(dt + "/registration/views.py",etapa,nombre,usuario)
         ProcesoPersonalizacion(proyecto,strApp.nombre,'views.py',directorio + nombre + "/registration/",stri,nombre,etapa,usuario)
         # CopiarArchivos(dt + "/registration/views.py",directorio + nombre + "/registration" + "/views.py",etapa,nombre,True)        
 
     # models.py seguridad
     if proyecto.conseguridad:
-        stri = LeerArchivo(dt + "/registration/models.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "/registration/models.py").texto
+        # stri = LeerArchivo(dt + "/registration/models.py",etapa,nombre,usuario)
         ProcesoPersonalizacion(proyecto,strApp.nombre,'models.py',directorio + nombre + "/registration/",stri,nombre,etapa,usuario)
         # CopiarArchivos(dt + "/registration/models.py",directorio + nombre + "/registration" + "/models.py",etapa,nombre,True)        
 
     # urls.py seguridad
     if proyecto.conseguridad:
-        stri = LeerArchivo(dt + "/registration/urls.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "/registration/urls.py").texto
+        # stri = LeerArchivo(dt + "/registration/urls.py",etapa,nombre,usuario)
         ProcesoPersonalizacion(proyecto,strApp.nombre,'urls.py',directorio + nombre + "/registration/",stri,nombre,etapa,usuario)
         # CopiarArchivos(dt + "/registration/urls.py",directorio + nombre + "/registration" + "/urls.py",etapa,nombre,True)        
 
     # forms.py seguridad
     if proyecto.conseguridad:
-        stri = LeerArchivo(dt + "/registration/forms.py",etapa,nombre,usuario)
+        stri = TextFiles.objects.get(file = "/registration/forms.py").texto
+        # stri = LeerArchivo(dt + "/registration/forms.py",etapa,nombre,usuario)
         ProcesoPersonalizacion(proyecto,strApp.nombre,'forms.py',directorio + nombre + "/registration/",stri,nombre,etapa,usuario)
         # CopiarArchivos(dt + "/registration/forms.py",directorio + nombre + "/registration" + "/forms.py",etapa,nombre,True)        
 
@@ -4820,7 +4891,9 @@ def CrearSeguridad(proyecto,directorio,dt,usuario):
 
 def CreaSeguridadHtml(nombre_archivo,etapa,nombre,directorio,dt,aplicacion,proyecto,usuario):
     # Copia el archivo de text files registration en la aplicacion registratio
-    stri = LeerArchivo(dt + "/registration/" + nombre_archivo,etapa,nombre,usuario)
+    print('nombre archivo ',nombre_archivo)
+    stri = TextFiles.objects.get(file = "/registration/" + nombre_archivo).texto
+    # stri = LeerArchivo(dt + "/registration/" + nombre_archivo,etapa,nombre,usuario)
     ProcesoPersonalizacion(proyecto,aplicacion.nombre,nombre_archivo,directorio + nombre + "/registration/templates/registration/",stri,nombre,etapa,usuario)
     # CopiarArchivos(dt + "/registration/" + nombre_archivo,directorio + nombre + "/registration" + "/templates/registration/" + nombre_archivo,etapa,nombre,True)
 

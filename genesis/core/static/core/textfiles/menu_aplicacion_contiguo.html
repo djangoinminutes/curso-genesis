@@ -1,0 +1,23 @@
+{% load static %}
+
+<!-- #@[p_menu_aplicacion_01] -->
+<!-- <div class="container d-flex @justificacion"> -->
+<div class="container">
+	<div class="row">
+<!-- #@[p_menu_aplicacion_02] -->
+		<div class="@columnas_opciones">
+<!-- #@[p_menu_aplicacion_03] -->
+			<a href="{% url 'core:home' %}">
+				<img src="{% static 'core/img/volver.png' %}" @hidden width="20px" height="20px" alt="" data-toggle="tooltip" title="Volver a @aplicacion">
+				<span class="opcionmenu" data-toggle="tooltip" title="Volver a @aplicacion">Volver</span>
+			</a>
+<!-- #@[p_menu_aplicacion_04] -->
+@opciones
+<!-- #@[p_menu_aplicacion_05] -->
+@seguridad			
+<!-- #@[p_menu_aplicacion_06] -->
+		</div>
+<!-- #@[p_menu_aplicacion_07] -->
+	</div>
+</div>
+<!-- #@[p_menu_aplicacion_08] -->

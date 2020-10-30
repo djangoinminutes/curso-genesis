@@ -2,7 +2,7 @@ from django import forms
 from .models import Propiedad
 
 TIPO_CHOICES = (
-        ('a','Lista'),
+        # ('a','Lista'),
         ('b','Boolean'),
         ('d','Decimal'),
         ('e','Hora'),

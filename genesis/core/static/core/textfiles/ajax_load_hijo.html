@@ -1,0 +1,17 @@
+<script>
+    $("#id_@padre").change(function () {
+      var url = $("#@modeloForm").attr("data-@foraneos-url");  
+      var @padreId = $(this).val();  
+
+      $.ajax({                       
+        url: url,                   
+        data: {
+          '@padre': @padreId      
+        },
+        success: function (data) {   
+          $("#id_@foraneo").html(data); 
+        }
+      });
+
+    });
+  </script>
